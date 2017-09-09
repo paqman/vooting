@@ -1,27 +1,24 @@
 const express = require('express');
-const router = express.Router();
 
-const pollModel = require('../models/poll')
+const pollModel = require('../models/poll');
+const itemModel = require('../models/item');
+
+const router = express.Router();
 
 let _db;
 
-
-/* GET users listing. */
+/* [GET] active poll */
 router.get('/', function (req, res, next) {
-
   return pollModel.getActivePoll(_db)
-      .then(poll => res.send(poll));
+    .then(poll => {
+      const pItems = itemModel.getPollItems(_db, poll.idPoll);
+      const pCriterias = itemModel.getPollCriterias(_db, poll.idPoll);
 
-  // _db.all(SELECT_ACTIVE_POLL, (err, rows) => {
-  //   res.send(rows)
-  // });
-
-  // res.send({
-  //   idPoll: 2,
-  //   name: 'Apple bake',
-  //   date: new Date(),
-  //   status: 'OPEN'
-  // });
+      Promise.all([pItems, pCriterias])
+        .then(([items, criterias]) => {
+          res.send({poll, items, criterias});
+        })
+    });
 });
 
 module.exports = function (db) {

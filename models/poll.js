@@ -1,18 +1,21 @@
 const SELECT_ACTIVE_POLL = `SELECT * FROM poll WHERE alias = $alias`;
+const SELECT_LATEST_POLL = `SELECT * FROM poll ORDER BY creationDate LIMIT 1`;
 
 function getActivePoll(db) {
   return new Promise((resolve, reject) => {
-    console.log(SELECT_ACTIVE_POLL);
+    const query = CURRENT_POLL === undefined ? SELECT_LATEST_POLL : SELECT_ACTIVE_POLL;
 
-
-    db.all(SELECT_ACTIVE_POLL, { '$alias': CURRENT_POLL }, (err, rows) => {
+    db.all(query, {'$alias': CURRENT_POLL}, (err, rows) => {
       if (err) {
-        reject(err)
+        return reject(err);
       }
 
-      resolve(rows)
-    });
+      if (rows.length === 1) {
+        return resolve(rows[0]);
+      }
 
+      return reject(`ERROR: Too many polls (${rows.length}): ${rows}`);
+    });
   });
 }
 

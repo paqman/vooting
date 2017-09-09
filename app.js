@@ -11,6 +11,9 @@ const db = new sqlite3.Database('./data/vooting.db');
 
 const index = require('./routes/index');
 const poll = require('./routes/poll')(db);
+const vote = require('./routes/vote')(db);
+
+db.on('trace', (query) => console.log(query));
 
 global.CURRENT_POLL = process.argv[2];
 console.log(`using ${process.argv[2]} poll`);
@@ -25,7 +28,7 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public'),
@@ -36,17 +39,18 @@ app.use(sassMiddleware({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/poll', poll);
+app.use('/api/poll', poll);
+app.use('/api/vote', vote);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+app.use(function (req, res, next) {
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

@@ -9,7 +9,7 @@
 <p>Welcome to <%= title %></p>
 <p id="content"></p>
 <script type="text/javascript">
-  fetch('/poll', {
+  fetch('/api/poll', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
   }).then(function (response) {
