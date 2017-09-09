@@ -3,9 +3,45 @@ Live voting application
 
 ## API
 [GET] /poll
+
 Return the current poll and the associated criteria/items
- 
-[PUT] /vote
+
+- Response
+```JSON
+{
+  "poll": {
+    "idPoll": "integer",
+    "name": "string",
+    "creationDate": "datetime",
+    "isActive": "boolean",
+    "alias": "string"
+  },
+  "items": [
+    {
+      "idItem": "number",
+      "name": "string",
+      "picture": "string",
+      "author": "string",
+      "idPoll": "number"
+    }
+  ],
+  "criterias": [
+    {
+      "idCriteria": "number",
+      "name": "string",
+      "idPoll": "number"
+    }
+  ]
+}
+```
+
+
+[POST] /vote
+
+Add a vote
+
+- Request
+
 ```JSON
 {
   "idCriteria": number,
@@ -15,6 +51,8 @@ Return the current poll and the associated criteria/items
 ```
 
 [POST] /like
+- Request
+
 ```JSON
 {
   "idItem": number,
