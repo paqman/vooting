@@ -9,6 +9,7 @@ let _db;
 
 /* [GET] create or update vote*/
 router.post('/:idItem(\\d+)/criteria/:idCriteria(\\d+)', function (req, res, next) {
+  console.log(req.body)
   const {vote} = req.body;
   const {idItem, idCriteria} = req.params;
   const idUser = res.locals.user;

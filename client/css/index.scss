@@ -1,0 +1,25 @@
+@import "~bootstrap/scss/bootstrap";
+
+.vote-buttons button {
+  @for $i from 1 to 4 {
+    &:nth-child(#{$i}) {
+      @extend .btn-outline-danger;
+    }
+  }
+  @for $i from 4 to 8 {
+    &:nth-child(#{$i}) {
+      @extend .btn-outline-warning;
+    }
+  }
+
+  @for $i from 8 to 11 {
+    &:nth-child(#{$i}) {
+      @extend .btn-outline-success;
+    }
+  }
+}
+
+.item-author {
+  text-transform: uppercase;
+  text-align: right;
+}
