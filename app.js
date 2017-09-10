@@ -8,6 +8,7 @@ const sassMiddleware = require('node-sass-middleware');
 
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./data/vooting.db');
+const userSessionMiddleware = require('./middleware/userSessionMiddleware');
 
 const index = require('./routes/index');
 const poll = require('./routes/poll')(db);
@@ -30,6 +31,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
+app.use(userSessionMiddleware.handleUserSession);
+
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
@@ -37,6 +40,7 @@ app.use(sassMiddleware({
   sourceMap: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.use('/', index);
 app.use('/api/poll', poll);

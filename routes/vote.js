@@ -7,12 +7,11 @@ const router = express.Router();
 
 let _db;
 
-// TODO : Handler user ID
-const idUser = uuid.v1();
-
 /* [GET] create or update vote*/
-router.post('/', function (req, res, next) {
-  const {idCriteria, idItem, vote} = req.body;
+router.post('/:idItem(\\d+)/criteria/:idCriteria(\\d+)', function (req, res, next) {
+  const {vote} = req.body;
+  const {idItem, idCriteria} = req.params;
+  const idUser = res.locals.user;
 
   if (!isValid(idUser) || !isValid(idCriteria) || !isValid(idItem)) {
     return res.status(400).send({message: 'A value is missing.'})
@@ -25,7 +24,7 @@ router.post('/', function (req, res, next) {
   return voteModel.addOrUpdateVote(_db, idUser, idCriteria, idItem, vote)
     .then(result => res.send({}))
     .catch(err => {
-      console.log(err)
+      console.log(err);
       res.status(500).send({message: err})
     });
 });

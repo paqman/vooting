@@ -2,7 +2,7 @@
 Live voting application
 
 ## API
-[GET] /poll
+``[GET] /poll``
 
 Return the current poll and the associated criteria/items
 
@@ -36,7 +36,7 @@ Return the current poll and the associated criteria/items
 ```
 
 
-[POST] /vote
+``[POST] /vote``
 
 Add a vote
 
@@ -50,7 +50,7 @@ Add a vote
 }
 ```
 
-[POST] /like
+``[POST] /like``
 - Request
 
 ```JSON
