@@ -58,4 +58,9 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
+// Close DB on exit
+process.on('exit', function() {
+  db.close();
+});
+
 module.exports = app;
